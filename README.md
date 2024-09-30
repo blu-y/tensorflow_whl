@@ -254,3 +254,24 @@ python -c "import tensorflow_text as tf_text; print(\"tf_text version: \", tf_te
 tf_text version:  2.16.2
 ```
 마찬가지로 already registered 경고가 뜨지만 설치 확인
+
+
+### jax
+#### 1. jax 0.4.20
+```
+git clone https://github.com/jax-ml/jax.git
+git checkout tags/jax-v0.4.20
+```
+
+#### 2. `.bazelrc` 파일 수정
+github.com/blu-y/tensorflow_whl/blob/main/jax/.bazelrc 파일 참조
+
+#### 3. 빌드 
+메모리 부족으로 swap 16gb로 설정 후 진행함
+```
+python3 build/build.py --enable_cuda --enable_nccl=False --cuda_compute_capabilities=sm_87 --cuda_version=12.2 --cudnn_version=8.9.4 --bazel_options=--repo_env=LOCAL_CUDA_PATH="/usr/local/cuda-12.2" --bazel_options=--repo_env=LOCAL_CUDNN_PATH="/usr/lib/aarch64-linux-gnu" --bazel_options=--cxxopt=-Wno-macro-redefined --bazel_options=--jobs=100
+```
+dist 폴더에 `jaxlib-0.4.20.dev20240930-cp310-cp310-manylinux2014_aarch64.whl` 과 같은 파일 확인
+```
+pip install dist/jaxlib-0.4.20.dev20240930-cp310-cp310-manylinux2014_aarch64.whl
+```
